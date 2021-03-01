@@ -1,10 +1,11 @@
 from tkinter import font
 from tkinter.constants import BOTTOM, END, LEFT
 from typing import Sized
-from modules import ransomware
+import ransomware
 import tkinter as tk
+import sys
+import os
 #import PIL 
-
 
 
 class Application:
@@ -59,4 +60,6 @@ def main():
     root.mainloop()
 
 if __name__ == '__main__':
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+        os.chdir(sys._MEIPASS)
     main()
